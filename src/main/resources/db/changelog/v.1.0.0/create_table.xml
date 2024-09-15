@@ -3,16 +3,18 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
     <changeSet id="create-table-question" author="dmitryghoncharko">
         <createTable tableName="question">
             <column name="question_id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="question_body" type="varchar(1000)">
-                <constraints nullable="false" unique="true"/>
+            <column name="question_body" type="text">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
+
     <changeSet id="create-table-question_type" author="dmitryghoncharko">
         <createTable tableName="question_type">
             <column name="question_type_id" type="bigint" autoIncrement="true">
@@ -23,13 +25,14 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet id="create-table-answer" author="dmitryghoncharko">
         <createTable tableName="answer">
             <column name="answer_id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="answer_body" type="varchar(1000)">
-                <constraints nullable="false" unique="true"/>
+            <column name="answer_body" type="text">
+                <constraints nullable="false"/>
             </column>
             <column name="answer_true" type="boolean">
                 <constraints nullable="false"/>
