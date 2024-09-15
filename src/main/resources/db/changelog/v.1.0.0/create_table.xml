@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create-table-question" author="dmitryghoncharko">
+        <createTable tableName="question">
+            <column name="question_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="question_body" type="varchar(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create-table-question_type" author="dmitryghoncharko">
+        <createTable tableName="question_type">
+            <column name="question_type_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="question_type_name" type="varchar(600)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create-table-answer" author="dmitryghoncharko">
+        <createTable tableName="answer">
+            <column name="answer_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="answer_body" type="varchar(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="answer_true" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints foreignKeyName="answer_question_id_fk" references="question(question_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-question_type_question" author="dmitryghoncharko">
+        <createTable tableName="question_type_question">
+            <column name="question_type_question_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints foreignKeyName="question_id_fk" references="question(question_id)"/>
+            </column>
+            <column name="question_type_id" type="bigint">
+                <constraints foreignKeyName="question_type_id_fk" references="question_type(question_type_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -19,6 +19,6 @@ public class InterviewTrainingPlatformApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        csvReader.readCSV("/Users/dmitryghoncharko/Desktop/interview_questions/output.csv");
+//        csvReader.readCSV("/Users/dmitryghoncharko/Desktop/interview_questions/output.csv");
     }
 }
