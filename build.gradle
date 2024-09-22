@@ -13,12 +13,6 @@ java {
     }
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
 repositories {
     mavenCentral()
 }
@@ -27,34 +21,35 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.liquibase:liquibase-core'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'org.postgresql:postgresql'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
 tasks.withType(JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
+
 task uploadCsv(type: JavaExec) {
     description = 'Накат на БД questions схемы public для таблиц answer и question'
     group = 'Data Processing'
 
-    mainClass = 'by.ghoncharko.interview_training_platform.CSVDatabaseUploader'
+
+    mainClass = 'by/ghoncharko/interview_training_platform/InterviewTrainingPlatformApplication'
+
 
     doFirst {
         if (!project.hasProperty('csvFile')) {
             throw new GradleException("Please provide the 'csvFile' parameter using -PcsvFile=path/to/file.csv")
         }
     }
-
 
     args project.csvFile
 
@@ -64,4 +59,3 @@ task uploadCsv(type: JavaExec) {
 uploadCsv.onlyIf {
     project.hasProperty('csvFile')
 }
-//uploadCsv -PcsvFile=/Users/dmitryghoncharko/IdeaProjects/interview_training_platform/src/main/resources/questions/output.csv
