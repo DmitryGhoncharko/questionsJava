@@ -25,7 +25,7 @@ public class CSVDatabaseUploader {
             String line;
             line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                String[] columns = line.split(",", 2);  // Ожидаем две колонки: Вопрос и Ответ
+                String[] columns = line.split(",", 2);
                 if (columns.length == 2) {
                     String question = columns[0].trim();
                     String answer = columns[1].trim();

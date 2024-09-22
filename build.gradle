@@ -47,7 +47,7 @@ task uploadCsv(type: JavaExec) {
     description = 'Накат на БД questions схемы public для таблиц answer и question'
     group = 'Data Processing'
 
-    mainClass = 'by.ghoncharko.interview_training_platform.CsvUploadApplication'
+    mainClass = 'by.ghoncharko.interview_training_platform.CSVDatabaseUploader'
 
     doFirst {
         if (!project.hasProperty('csvFile')) {
