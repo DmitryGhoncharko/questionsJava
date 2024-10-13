@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вопрос с ответами</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2c2c2c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #3a3a3a;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .answer {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #4e4e4e;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .answer:hover {
+            background-color: #6a6a6a;
+        }
+        .code {
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #f8f8f2;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="question" th:utext="${questions.content[0].questionBody}"></div>
+    <div th:each="answer, stat : ${questions.content[0].answers}">
+        <button class="answer btn"
+                th:onclick="'checkAnswer(' + ${answer.id} + ', ' + ${answer.answerTrue} + ', ' + ${questions.number} + ', ' + ${stat.index + 1} + ')' ">
+            <span class="answer-text" th:utext="${stat.index + 1} + '. ' + ${answer.answerBody}"></span>
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>
+<script>
+    var md = window.markdownit();
+
+    // Получаем массив ответов из Thymeleaf
+    const answers = /*[[${questions.content[0].answers}]]*/ [];
+
+    // Находим номер правильного ответа
+    const correctAnswerIndex = answers.findIndex(answer => answer.answerTrue === true) + 1;
+
+    function checkAnswer(selectedId, isCorrect, page) {
+        if (isCorrect) {
+            showAlert("Ответ верный!", "green");
+        } else {
+            res = correctAnswerIndex+1
+            showAlert("Неверный ответ! Правильный вариант: " + res + ".", "red");
+        }
+
+        setTimeout(function() {
+            window.location.href = '/test/' + (page + 1);
+        }, 2000);
+    }
+
+    function showAlert(message, color) {
+        const alertBox = document.createElement('div');
+        alertBox.textContent = message;
+        alertBox.style.position = 'fixed';
+        alertBox.style.top = '20px';
+        alertBox.style.left = '50%';
+        alertBox.style.transform = 'translateX(-50%)';
+        alertBox.style.padding = '15px';
+        alertBox.style.backgroundColor = color;
+        alertBox.style.color = '#ffffff';
+        alertBox.style.borderRadius = '5px';
+        alertBox.style.zIndex = '1000';
+        alertBox.style.fontSize = '1.2rem';
+        document.body.appendChild(alertBox);
+
+        setTimeout(function() {
+            document.body.removeChild(alertBox);
+        }, 3000);
+    }
+
+    document.querySelectorAll('.answer-text').forEach(span => {
+        const rawText = span.innerHTML;
+        span.innerHTML = md.render(rawText);
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

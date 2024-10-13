@@ -3,6 +3,8 @@ package by.ghoncharko.interview_training_platform.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -19,4 +21,6 @@ public class Question {
     @Column(name = "question_body", nullable = false, length = 1000)
     private String questionBody;
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Answer> answers;
 }
